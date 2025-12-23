@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health Tips - Period & PCOD Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #ff6fa8;
+      --primary-dark: #e65c95;
+      --secondary: #b8a7ff;
+      --background: #fdf6fb;
+      --card-bg: #ffffff;
+      --soft-bg: #ffe6ef;
+      --text: #2a2a2a;
+      --radius: 18px;
+      --shadow: 0 10px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #ffe3ec, #f7e6ff);
+      color: var(--text);
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 20px 30px;
+      text-align: center;
+      font-size: 1.7rem;
+      font-weight: 700;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    /* NAVIGATION */
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      background: #fff;
+      padding: 12px 10px;
+      margin-top: 15px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: var(--shadow);
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* MAIN CONTAINER */
+    .container {
+      max-width: 650px;
+      margin: 45px auto;
+      background: var(--card-bg);
+      padding: 35px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+      animation: fadeIn 0.7s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      color: var(--primary);
+      font-size: 1.9rem;
+      margin-bottom: 25px;
+      font-weight: 700;
+    }
+
+    /* TIP CARD */
+    .tip-card {
+      background: var(--soft-bg);
+      padding: 30px 20px;
+      border-radius: var(--radius);
+      margin-bottom: 25px;
+      box-shadow: 0 6px 12px rgba(255, 111, 145, 0.25);
+      transition: transform 0.3s;
+    }
+
+    .tip-card:hover {
+      transform: scale(1.02);
+    }
+
+    .tip-icon {
+      font-size: 3.2rem;
+      margin-bottom: 12px;
+      display: block;
+      color: var(--primary-dark);
+    }
+
+    .tip-text {
+      font-size: 1.15rem;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    /* BUTTON */
+    button {
+      padding: 14px 30px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: var(--shadow);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    /* MOBILE RESPONSIVENESS */
+    @media (max-width: 650px) {
+      .container {
+        padding: 25px;
+        margin: 25px;
+      }
+
+      nav {
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>Period & PCOD Tracker</header>
+
+<nav>
+  <a href="{% url 'dashboard' %}">Dashboard</a>
+  <a href="{% url 'add_period' %}">Add Period</a>
+  <a href="{% url 'history' %}">History</a>
+  <a href="{% url 'prediction' %}">Prediction</a>
+  <a href="{% url 'add_symptoms' %}">Symptoms</a>
+  <a href="{% url 'reports' %}">Reports</a>
+</nav>
+
+
+  <div class="container">
+    <h2>Health & Wellness Tips</h2>
+
+    <div class="tip-card">
+      <span class="tip-icon" id="tip-icon">💡</span>
+      <p class="tip-text" id="health-tip">Tap the button below for your first tip!</p>
+    </div>
+
+    <button onclick="nextTip()">Get a New Tip 🔄</button>
+  </div>
+
+  <script>
+    const tips = [
+      { text: "Stay **hydrated**: Drink 8–10 glasses of water daily.", icon: "💧" },
+      { text: "Eat a **balanced diet** rich in whole grains, fruits, and lean protein.", icon: "🥗" },
+      { text: "Engage in **moderate exercise** to regulate hormones and reduce stress.", icon: "🏃‍♀️" },
+      { text: "Aim for **7–8 hours of sleep** every night.", icon: "🛌" },
+      { text: "Practice **stress relief** like meditation or breathing exercises.", icon: "😌" },
+      { text: "Limit **processed foods** and excess sugar.", icon: "🍬" },
+      { text: "Try **cinnamon or spearmint tea** for hormonal balance.", icon: "🍵" },
+      { text: "Boost **Omega-3s** for anti-inflammatory benefits.", icon: "🐟" },
+      { text: "Choose **low GI foods** to stabilize blood sugar.", icon: "🍞" },
+      { text: "Consult a **gynecologist** for recurring symptoms.", icon: "🩺" }
+    ];
+
+    const tipElement = document.getElementById("health-tip");
+    const iconElement = document.getElementById("tip-icon");
+
+    function nextTip() {
+      const randomIndex = Math.floor(Math.random() * tips.length);
+      const selectedTip = tips[randomIndex];
+
+      tipElement.innerHTML = selectedTip.text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      iconElement.textContent = selectedTip.icon;
+    }
+
+    nextTip();
+  </script>
+</body>
+</html>

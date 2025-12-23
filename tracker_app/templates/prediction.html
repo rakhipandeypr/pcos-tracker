@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prediction - Period & PCOD Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #ff6fa8;
+            --primary-dark: #e65c95;
+            --secondary: #b8a7ff;
+            --background: #faf8fc;
+            --card-bg: #ffffff;
+            --text: #2a2a2a;
+            --radius: 18px;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+            --success: #32c48d;
+            /* New color for ovulation/fertility */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: var(--background);
+            color: var(--text);
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .logout-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            padding: 8px 18px;
+            border-radius: 25px;
+            backdrop-filter: blur(4px);
+            transition: 0.3s;
+        }
+
+        .logout-btn:hover {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 15px 0;
+            background: #fff;
+            margin-top: 15px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: var(--shadow);
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 22px;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+        }
+
+        /* --- Prediction Specific Styles --- */
+
+        .prediction-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .prediction-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-top: 6px solid;
+        }
+
+        /* Specific borders for visual distinction */
+        .period-card {
+            border-top-color: var(--primary);
+        }
+
+        .fertile-card {
+            border-top-color: var(--success);
+        }
+
+        .ovulation-card {
+            border-top-color: var(--secondary);
+        }
+
+        .prediction-card h3 {
+            color: var(--text);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .prediction-card p {
+            margin: 5px 0;
+            font-size: 1rem;
+        }
+
+        .prediction-date {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .period-card .prediction-date {
+            color: var(--primary);
+        }
+
+        .fertile-card .prediction-date {
+            color: var(--success);
+        }
+
+        .ovulation-card .prediction-date {
+            color: var(--secondary);
+        }
+
+
+        .info-box {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .info-box h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box ul li {
+            background: var(--background);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            font-weight: 500;
+            border-left: 5px solid var(--secondary);
+        }
+
+        .highlight {
+            color: var(--primary-dark);
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        Period & PCOD Tracker
+  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </header>
+
+    <nav>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'add_period' %}">Add Period</a>
+        <a href="{% url 'history' %}">History</a>
+        <a href="{% url 'prediction' %}" class="active">Prediction</a>
+        <a href="{% url 'add_symptoms' %}">Symptoms</a>
+        <a href="{% url 'reports' %}">Reports</a>
+    </nav>
+
+
+    <main class="container">
+
+        <div class="prediction-summary">
+            {% if next_period %}
+            <div class="prediction-card period-card">
+                <h3>Next Predicted Period 🩸</h3>
+                <p>Based on your {{ avg_cycle }}-day average cycle.</p>
+                <div class="prediction-date">{{ next_period|date:"d M Y" }}</div>
+                <p>~{{ days_until }} days until your next period.</p>
+            </div>
+
+            <div class="prediction-card fertile-card">
+                <h3>Predicted Fertile Window 🌱</h3>
+                <p>Best chance of conception.</p>
+                <div class="prediction-date">
+                    {{ fertile_start|date:"d M" }} - {{ fertile_end|date:"d M" }}
+                </div>
+                <p>High fertility expected during this week.</p>
+            </div>
+
+            <div class="prediction-card ovulation-card">
+                <h3>Predicted Ovulation Day ✨</h3>
+                <p>Peak fertility day.</p>
+                <div class="prediction-date">{{ ovulation_day|date:"d M Y" }}</div>
+                <p>Approx. 14 days before your next cycle.</p>
+            </div>
+            {% else %}
+            <div class="info-box" style="grid-column: 1 / -1; text-align: center;">
+                <p>Please <a href="{% url 'add_period' %}">add a period log</a> to see your predictions!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="info-box">
+            <h2>Cycle Insights & Tips 💡</h2>
+            <ul>
+                <li>You are currently in the <span class="highlight">Luteal Phase</span>. This phase lasts until your
+                    next period.</li>
+                <li>Hormones: <span class="highlight">Progesterone</span> levels are high, which may cause PMS symptoms.
+                </li>
+                <li>**Tip:** Focus on <span class="highlight">stress reduction</span> and eat fibre-rich foods to manage
+                    potential bloating.</li>
+                <li>Your average cycle length is **29 Days**, which is within the normal range (21-35 days).</li>
+            </ul>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Symptom - Period Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Global Theme Variables (Your Saved Colors) --- */
+        :root {
+            --primary: #ff6fa8;
+            --primary-dark: #e65c95;
+            --secondary: #b8a7ff;
+            --background: #faf8fc;
+            --card-bg: #ffffff;
+            --text: #2a2a2a;
+            --radius: 18px;
+            --shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--background);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+        }
+
+        /* --- Header --- */
+            header {
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      border-bottom-left-radius: 20px;
+      border-bottom-right-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+
+        .logout-btn {
+      color: white;
+      text-decoration: none;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.7);
+      padding: 8px 18px;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: white;
+      color: var(--primary);
+    }
+
+        /* --- Navigation --- */
+nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 15px;
+      background: #fff;
+      margin: 20px auto;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 1100px;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 22px;
+      transition: 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--primary);
+      color: white;
+    }
+        /* --- Main Wrapper --- */
+        .page-content {
+            padding: 30px;
+            max-width: 700px;
+            margin: 30px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* --- Card --- */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px;
+            text-align: center;
+        }
+
+        h2 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        /* --- Form Inputs --- */
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background-color: var(--background);
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 5px rgba(255, 111, 168, 0.4);
+            outline: none;
+        }
+
+        /* --- Save Button --- */
+        .save-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: 0.3s;
+        }
+
+        .save-button:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+
+        /* --- Symptoms Table --- */
+        .symptom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95em;
+        }
+
+        .symptom-table th {
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px;
+            text-transform: uppercase;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .symptom-table td {
+            padding: 12px;
+            border-bottom: 1px solid #f0e8ff;
+        }
+
+        .symptom-table tr:hover {
+            background-color: #f5f1ff;
+        }
+
+        @media (max-width: 600px) {
+            .page-content {
+                padding: 15px;
+            }
+
+            .nav-bar {
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+  Period & PCOD Tracker
+  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</header>
+
+<nav class="nav-bar">
+  <a href="{% url 'dashboard' %}">Dashboard</a>
+  <a href="{% url 'add_period' %}">Add Period</a>
+  <a href="{% url 'history' %}">History</a>
+  <a href="{% url 'prediction' %}">Prediction</a>
+  <a href="{% url 'add_symptoms' %}" class="active">Symptoms</a>
+  <a href="{% url 'reports' %}">Reports</a>
+</nav>
+
+<div class="page-content">
+    <div class="card add-symptom-card">
+        <h2>Track a New Symptom</h2>
+        <form method="POST" action="{% url 'add_symptoms' %}">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" id="symptomName" name="symptomName" 
+                       placeholder="Symptom Name (e.g., Body Pain, Nausea)" required>
+            </div>
+            <div class="input-group">
+                <input type="number" id="severity" name="severity" min="1" max="5" 
+                       placeholder="Severity (1 - Mild to 5 - Severe)" required>
+            </div>
+            <button type="submit" class="save-button">Save Symptom</button>
+        </form>
+    </div>
+
+    <div class="card recent-symptoms">
+        <h2>Recent Symptoms</h2>
+        <table class="symptom-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Symptom</th>
+                    <th>Severity</th>
+                    <th>Logged At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in symptom_logs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ log.SymptomName }}</td>
+                    <td>{{ log.Severity }}</td>
+                    <td>{{ log.LogDate|date:"d M Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No symptoms logged yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

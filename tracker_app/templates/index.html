@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CycleCare - Period & PCOS Tracker</title>
+    <style>
+        :root {
+            --primary-pink: #ff8fa3;
+            --dark-pink: #e67388;
+            --slate-blue: #4a5568;
+            --bg-gradient: linear-gradient(135deg, #fff5f7 0%, #ffe4e9 100%);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--slate-blue);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #d63384;
+            margin-bottom: 0.5rem;
+        }
+
+        .description {
+            max-width: 600px;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover { transform: translateY(-5px); }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .btn-login {
+            background-color: white;
+            color: var(--primary-pink);
+            border: 2px solid var(--primary-pink);
+        }
+
+        .btn-signup {
+            background-color: var(--primary-pink);
+            color: white;
+            border: 2px solid var(--primary-pink);
+        }
+
+        footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <h1>CycleCare 🌸</h1>
+        <p class="description">
+            The all-in-one companion for managing PCOS and tracking your menstrual health. 
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3>📅 Predict</h3>
+                <p>Advanced cycle forecasting</p>
+            </div>
+            <div class="feature-card">
+                <h3>🤒 Log</h3>
+                <p>Track symptoms daily</p>
+            </div>
+            <div class="feature-card">
+                <h3>📊 Reports</h3>
+                <p>Export health data</p>
+            </div>
+        </div>
+
+       <div class="btn-group">
+    <a href="{% url 'login' %}" class="btn btn-login">Log In</a>
+    <a href="{% url 'signup' %}" class="btn btn-signup">Create Account</a>
+</div>
+    </section>
+
+    <footer>
+        &copy; 2025 CycleCare Tracker
+    </footer>
+
+</body>
+</html>

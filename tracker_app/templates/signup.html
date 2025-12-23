@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Period & PCOD Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        :root {
+            --primary-pink: #ff6fa8; 
+            --dark-pink: #e65c95;
+            --soft-bg: #faf8fc; 
+            --white: #ffffff;
+            --secondary: #b8a7ff;
+            --text-dark: #2a2a2a;
+            --shadow-inset: inset 2px 2px 5px rgba(0, 0, 0, 0.05), inset -2px -2px 5px rgba(255, 255, 255, 0.7);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: var(--soft-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .signup-container {
+            background: var(--soft-bg);
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 35px;
+            border-radius: 25px;
+            text-align: center;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.08), -10px -10px 20px var(--white);
+        }
+
+        .icon-wrapper { font-size: 2.5rem; color: var(--primary-pink); margin-bottom: 5px; }
+        h2 { color: var(--dark-pink); margin-bottom: 10px; font-weight: 700; }
+        .subtitle { color: #777; margin-bottom: 25px; font-size: 0.9rem; }
+        label { display: block; margin-top: 15px; font-weight: 600; text-align: left; }
+        
+        .input-group { position: relative; }
+        input {
+            width: 100%;
+            padding: 14px 14px 14px 45px;
+            margin-top: 5px;
+            border-radius: 12px;
+            border: none;
+            background: var(--soft-bg);
+            box-shadow: var(--shadow-inset);
+            box-sizing: border-box;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 58%;
+            transform: translateY(-50%);
+            color: var(--primary-pink);
+        }
+
+        button {
+            margin-top: 35px;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--primary-pink), var(--secondary));
+            color: white;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            box-shadow: 6px 6px 15px rgba(255, 111, 168, 0.4);
+        }
+
+        .alert { padding: 10px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem; }
+        .alert-error { background: #fee2e2; color: #b91c1c; }
+        .alert-success { background: #dcfce7; color: #15803d; }
+    </style>
+</head>
+<body>
+
+    <div class="signup-container">
+        <div class="icon-wrapper"><i class="fas fa-venus"></i></div>
+        <h2>Join the Tracker</h2>
+        <p class="subtitle">Start logging your cycles and symptoms today.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form action="{% url 'signup' %}" method="POST">
+            {% csrf_token %}
+            
+            <label for="username">Username</label>
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+            </div>
+
+            <label for="password">Password</label>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
+            </div>
+
+            <button type="submit">Sign Up Securely</button>
+        </form>
+        
+        <div style="margin-top: 25px; color: #777;">
+            Already have an account? <a href="{% url 'login' %}" style="color: var(--primary-pink); text-decoration: none; font-weight: 600;">Login</a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -10,8 +10,7 @@ SECRET_KEY = 'django-insecure-test-key'
 DEBUG = True
 
 # Allowed hosts
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['rakhiproject.pythonanywhere.com']
 # Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -58,24 +57,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database configuration (SQL Server)
-# In your settings.py
+# Database configuration (Switching from SQL Server to SQLite for PythonAnywhere)
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql', 
-        'NAME': 'pcod_tracker_db',
-        'USER': 'pcos',
-        'PASSWORD': '1234',
-        'HOST': 'LAPTOP-Q38GC11F',
-        'PORT': '', 
-        'OPTIONS': {
-    'driver': 'ODBC Driver 18 for SQL Server',
-    # Adding the attribute directly to the string builder format
-    'extra_params': 'TrustServerCertificate=yes', 
-    'encrypt': 'yes',
-},
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

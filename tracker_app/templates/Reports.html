@@ -1,295 +1,144 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Reports - Health Tracker</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Reports - Period & PCOD Tracker</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <style>
-        :root {
-            --primary: #ff6fa8;
-            --secondary: #b8a7ff;
-            --bg: #faf8fc;
-        }
+<style>
+:root {
+  --primary:#ff6fa8;
+  --primary-dark:#e65c95;
+  --secondary:#b8a7ff;
+  --background:#faf8fc;
+  --card-bg:#ffffff;
+  --text:#2a2a2a;
+  --radius:18px;
+  --shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+*{box-sizing:border-box;}
+body{font-family:'Poppins',sans-serif;margin:0;background:var(--background);color:var(--text);}
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg);
-            margin: 0;
-            padding: 20px;
-        }
-        header {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 1.8rem;
-            font-weight: 700;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: var(--shadow);
-        }
+/* HEADER */
+header{background:linear-gradient(90deg,var(--primary),var(--secondary));color:white;padding:20px 40px;display:flex;justify-content:space-between;align-items:center;font-size:1.8rem;font-weight:700;border-bottom-left-radius:20px;border-bottom-right-radius:20px;box-shadow:var(--shadow);}
+.logout-btn{color:white;text-decoration:none;font-size:.9rem;border:1px solid rgba(255,255,255,.7);padding:8px 18px;border-radius:25px;}
+.logout-btn:hover{background:white;color:var(--primary);}
 
-        .logout-btn {
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            padding: 8px 18px;
-            border-radius: 25px;
-            backdrop-filter: blur(4px);
-            transition: 0.3s;
-        }
+/* NAV */
+nav{display:flex;justify-content:center;gap:12px;padding:15px;background:#fff;margin:20px auto;border-radius:15px;width:90%;max-width:1100px;box-shadow:var(--shadow);flex-wrap:wrap;}
+nav a{text-decoration:none;color:var(--primary);font-weight:600;padding:10px 18px;border-radius:22px;}
+nav a.active,nav a:hover{background:var(--primary);color:white;}
 
-        .logout-btn:hover {
-            background-color: white;
-            color: var(--primary);
-        }
+/* CONTAINER */
+.container{max-width:1200px;margin:auto;padding:30px 20px;}
+h2{text-align:center;color:var(--primary);margin-bottom:30px;}
 
-        nav {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            padding: 15px 0;
-            background: #fff;
-            margin-top: 15px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 1100px;
-            margin-left: auto;
-            margin-right: auto;
-            box-shadow: var(--shadow);
-        }
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:25px;margin-bottom:40px;}
+.metric-card{background:var(--card-bg);padding:30px;border-radius:var(--radius);box-shadow:var(--shadow);text-align:center;border-top:6px solid var(--primary);}
+.metric-card h1{font-size:2.2rem;color:var(--secondary);margin:0;}
+.metric-card p{margin-top:8px;font-weight:600;}
 
-        nav a {
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 600;
-            padding: 10px 18px;
-            border-radius: 22px;
-            transition: 0.3s;
-        }
+/* CHARTS */
+.charts{display:grid;grid-template-columns:1fr;gap:25px;margin-bottom:40px;}
+.chart-card{background:var(--card-bg);padding:25px;border-radius:var(--radius);box-shadow:var(--shadow);height:320px;}
+canvas{width:100%!important;height:100%!important;}
 
-        nav a:hover,
-        nav a.active {
-            background: var(--primary);
-            color: white;
-        }
+/* TABLE */
+.table-card{background:var(--card-bg);padding:25px;border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:600px;}
+th{background:var(--secondary);color:white;padding:12px;}
+td{padding:12px;text-align:center;border-bottom:1px solid #eee;}
 
+/* DOWNLOAD BUTTON */
+.download-btn{
+  background:linear-gradient(90deg,var(--primary),var(--secondary));
+  color:white;padding:10px 18px;border-radius:25px;text-decoration:none;font-weight:600;
+  box-shadow:0 4px 12px rgba(255,111,168,.3);
+}
+.download-btn:hover{opacity:.9;}
 
-        .container {
-            max-width: 1000px;
-            margin: auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-
-        h2, h3 {
-            color: var(--primary);
-            text-align: center;
-        }
-
-        .metric-cards {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            flex: 1;
-            text-align: center;
-            padding: 20px;
-            background: #fff4f8;
-            border-radius: 15px;
-            border: 1px solid var(--primary);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .chart-box {
-            background: #fdfdfd;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #f0f0f0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th {
-            background: var(--secondary);
-            color: white;
-            padding: 12px;
-        }
-
-        td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-        }
-    </style>
+@media(min-width:768px){.charts{grid-template-columns:1fr 1fr;}}
+</style>
 </head>
 
 <body>
+
 <header>
-        Period & PCOD Tracker
-  <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
-    </header>
+Period & PCOD Tracker
+<a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</header>
 
-    <nav>
-        <a href="{% url 'dashboard' %}">Dashboard</a>
-        <a href="{% url 'add_period' %}">Add Period</a>
-        <a href="{% url 'history' %}">History</a>
-        <a href="{% url 'prediction' %}">Prediction</a>
-        <a href="{% url 'add_symptoms' %}">Symptoms</a>
-        <a href="{% url 'reports' %}"  class="active">Reports</a>
-    </nav>
-<div class="container">
-    <h2>Health Analysis Reports 📊</h2>
+<nav>
+<a href="{% url 'dashboard' %}">Dashboard</a>
+<a href="{% url 'add_period' %}">Add Period</a>
+<a href="{% url 'history' %}">History</a>
+<a href="{% url 'prediction' %}">Prediction</a>
+<a href="{% url 'add_symptoms' %}">Symptoms</a>
+<a href="{% url 'reports' %}" class="active">Reports</a>
+</nav>
 
-    <!-- METRICS -->
-    <div class="metric-cards">
-        <div class="card">
-            <h1 style="color: var(--primary); margin:0;">
-                {{ avg_cycle|default:0|floatformat:1 }}
-            </h1>
-            <p>Avg Cycle Length</p>
-        </div>
+<main class="container">
 
-        <div class="card">
-            <h1 style="color: var(--secondary); margin:0;">
-                {{ avg_duration|default:0|floatformat:1 }}
-            </h1>
-            <p>Avg Period Duration</p>
-        </div>
-    </div>
-
-    <!-- CHARTS -->
-    <div class="grid">
-        <div class="chart-box">
-            <h3>Cycle Length Trend</h3>
-            <canvas id="cycleTrendChart"></canvas>
-        </div>
-
-        <div class="chart-box">
-            <h3>Symptom Frequency</h3>
-            <canvas id="symptomBarChart"></canvas>
-        </div>
-    </div>
-
-    <!-- TABLE -->
-    <h3>Historical Log</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Start Date</th>
-                <th>Duration</th>
-                <th>Cycle Length</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs_table %}
-            <tr>
-                <td>{{ log.StartDate }}</td>
-                <td>{{ log.Duration }} Days</td>
-                <td>{{ log.CycleLength|default:"--" }} Days</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="3">No records found.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+<h2>Health Reports 📊</h2>
+<a href="{% url 'download_report' %}" class="download-btn">⬇ Download PDF</a>
 </div>
 
-<!-- ================= JS ================= -->
+<div class="metrics">
+<div class="metric-card">
+<h1>{{ avg_cycle|default:0|floatformat:1 }}</h1>
+<p>Average Cycle Length (Days)</p>
+</div>
+<div class="metric-card">
+<h1>{{ avg_duration|default:0|floatformat:1 }}</h1>
+<p>Average Period Duration (Days)</p>
+</div>
+</div>
+
+<div class="charts">
+<div class="chart-card">
+<h3>Cycle Length Trend</h3>
+<canvas id="cycleChart"></canvas>
+</div>
+<div class="chart-card">
+<h3>Symptoms Frequency</h3>
+<canvas id="symptomChart"></canvas>
+</div>
+</div>
+
+<div class="table-card">
+<h3>Recent Cycle History</h3>
+<table>
+<thead><tr><th>Start Date</th><th>Duration</th><th>Cycle Length</th></tr></thead>
+<tbody>
+{% for log in logs_table %}
+<tr>
+<td>{{ log.StartDate|date:"d M Y" }}</td>
+<td>{{ log.Duration }} Days</td>
+<td>{{ log.CycleLength|default:"--" }} Days</td>
+</tr>
+{% empty %}
+<tr><td colspan="3">No data available</td></tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+</main>
+
 <script>
-    // -------- SAFE DATA FROM DJANGO --------
-    const cycleLabels = [
-        {% for log in logs_chart %}
-            "{{ log.StartDate|date:'M d' }}"{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
+const cycleLabels=[{% for log in logs_chart %}"{{ log.StartDate|date:'M d' }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+const cycleData=[{% for log in logs_chart %}{{ log.CycleLength|default:28 }}{% if not forloop.last %},{% endif %}{% endfor %}];
+const symptomLabels=[{% for s in symptom_counts %}"{{ s.SymptomName }}"{% if not forloop.last %},{% endif %}{% endfor %}];
+const symptomData=[{% for s in symptom_counts %}{{ s.total }}{% if not forloop.last %},{% endif %}{% endfor %}];
 
-    const cycleData = [
-        {% for log in logs_chart %}
-            {{ log.CycleLength|default:28 }}{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    const symptomLabels = [
-        {% for s in symptom_counts %}
-            "{{ s.SymptomName }}"{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    const symptomData = [
-        {% for s in symptom_counts %}
-            {{ s.total }}{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-
-    // -------- LINE CHART --------
-    if (cycleLabels.length > 0) {
-        new Chart(document.getElementById('cycleTrendChart'), {
-            type: 'line',
-            data: {
-                labels: cycleLabels,
-                datasets: [{
-                    label: 'Cycle Length (Days)',
-                    data: cycleData,
-                    borderColor: '#ff6fa8',
-                    backgroundColor: 'rgba(255, 111, 168, 0.15)',
-                    fill: true,
-                    tension: 0.4
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: { legend: { display: true } }
-            }
-        });
-    }
-
-    // -------- BAR CHART --------
-    if (symptomLabels.length > 0) {
-        new Chart(document.getElementById('symptomBarChart'), {
-            type: 'bar',
-            data: {
-                labels: symptomLabels,
-                datasets: [{
-                    label: 'Occurrences',
-                    data: symptomData,
-                    backgroundColor: '#b8a7ff'
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: { stepSize: 1 }
-                    }
-                }
-            }
-        });
-    }
+new Chart(document.getElementById('cycleChart'),{type:'line',data:{labels:cycleLabels,datasets:[{data:cycleData,borderColor:'#ff6fa8',backgroundColor:'rgba(255,111,168,0.15)',fill:true,tension:.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+new Chart(document.getElementById('symptomChart'),{type:'bar',data:{labels:symptomLabels,datasets:[{data:symptomData,backgroundColor:'#b8a7ff',borderRadius:8}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}});
 </script>
 
 </body>
